@@ -1,6 +1,6 @@
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 import pandas as pd
@@ -25,6 +25,7 @@ app.layout = html.Div([
 # Add in callback
 @app.callback(Output('graph','figure'),
               [Input('year-picker', 'value')])
+
 def update_figure(selected_year):
     # Data only for selected year from dropdown
     filtered_df = df[df['year']== selected_year]
@@ -36,14 +37,15 @@ def update_figure(selected_year):
         traces.append(go.Scatter(
             x = df_by_continent['gdpPercap'],
             y = df_by_continent['lifeExp'],
+            text= df_by_continent['country'],
             mode = 'markers',
             opacity = 0.7,
-            maker = {'size':15},
+            marker = {'size':15},
             name = continent_name
         ))
 
     return {'data':traces,
-            'layout':go.layout(title='My Plot',
+            'layout':go.Layout(title='My Plot',
                                xaxis={'title':'GDP Per Cap','type':'log'},
                                yaxis={'title':'Life Expectancy'})}
 
